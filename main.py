@@ -3,11 +3,15 @@
 import sensor, image, lcd, time
 import KPU as kpu
 import gc, sys
+from Maix import GPIO
+from fpioa_manager import fm
+from board import board_info
 
 input_size = (224, 224)
 labels = ['car']
 anchors = [6.44, 3.78, 4.41, 2.16, 6.16, 2.56, 0.45, 0.39, 5.25, 3.19]
 seuil_cnt = 5 # how long the detection will last
+quality = 50
 
 
 def lcd_show_except(e):
@@ -21,12 +25,20 @@ def lcd_show_except(e):
 
 def main(anchors, labels = None, model_addr="/sd/m.kmodel", sensor_window=input_size, lcd_rotation=0, sensor_hmirror=False, sensor_vflip=False):
     sensor.reset()
+    sensor.set_jb_quality(quality)
     sensor.set_pixformat(sensor.RGB565)
     sensor.set_framesize(sensor.QVGA)
     sensor.set_windowing(sensor_window)
     sensor.set_hmirror(sensor_hmirror)
     sensor.set_vflip(sensor_vflip)
     sensor.run(1)
+
+    fm.register(board_info.LED_G, fm.fpioa.GPIO0, force=True)
+    led_b = GPIO(GPIO.GPIO0, GPIO.OUT)
+    led_b.value(0)
+
+
+
 
     lcd.init(type=1)
     lcd.rotation(2)
@@ -57,12 +69,14 @@ def main(anchors, labels = None, model_addr="/sd/m.kmodel", sensor_window=input_
         there_is_car = False # the sign of if there is a car
         cnt_true = 0 # count for how long there is a car
         cnt_false = 0 # count for how long there is no car
+        led_b.value(1)
         while(True):
             img = sensor.snapshot()
             t = time.ticks_ms()
             objects = kpu.run_yolo2(task, img)
             t = time.ticks_ms() - t
             if objects:
+                led_b.value(1) # turn of the light
                 cnt_false = 0
                 cnt_true += 1
                 # increasing cnt
@@ -74,15 +88,16 @@ def main(anchors, labels = None, model_addr="/sd/m.kmodel", sensor_window=input_
                     img.draw_rectangle(pos)
                     img.draw_string(pos[0], pos[1], "%s : %.2f" %(labels[obj.classid()], obj.value()), scale=2, color=(255, 0, 0))
             else:
+                led_b.value(0) #turn on the light
                 cnt_true = 0
                 cnt_false += 1
                 if(there_is_car and cnt_false >= seuil_cnt):
                     cnt_car += 1
+                    print(cnt_car)
                 if(cnt_false>=seuil_cnt):
                     there_is_car = False
             img.draw_string(0, 200, "t:%dms cnt:%d" %(t,cnt_car), scale=2, color=(255, 0, 0))
             lcd.display(img)
-            # print(cnt_car)
     except Exception as e:
         raise e
     finally:
