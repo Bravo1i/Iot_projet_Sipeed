@@ -11,10 +11,13 @@ input_size = (224, 224)
 labels = ['car']
 anchors = [6.44, 3.78, 4.41, 2.16, 6.16, 2.56, 0.45, 0.39, 5.25, 3.19]
 seuil_cnt = 5 # how long the detection will last
-quality = 50
+quality = 50 # the image quality
 
 
 def lcd_show_except(e):
+    '''
+    show except on screen
+    '''
     import uio
     err_str = uio.StringIO()
     sys.print_exception(e, err_str)
@@ -32,17 +35,17 @@ def main(anchors, labels = None, model_addr="/sd/m.kmodel", sensor_window=input_
     sensor.set_hmirror(sensor_hmirror)
     sensor.set_vflip(sensor_vflip)
     sensor.run(1)
+    # init the carema
 
     fm.register(board_info.LED_G, fm.fpioa.GPIO0, force=True)
     led_b = GPIO(GPIO.GPIO0, GPIO.OUT)
     led_b.value(0)
-
-
-
+    # init the blue led
 
     lcd.init(type=1)
     lcd.rotation(2)
     lcd.clear(lcd.WHITE)
+    # init the screen
 
     if not labels:
         with open('labels.txt','r') as f:
@@ -64,19 +67,20 @@ def main(anchors, labels = None, model_addr="/sd/m.kmodel", sensor_window=input_
     try:
         task = None
         task = kpu.load(model_addr)
+        # load the model
         kpu.init_yolo2(task, 0.7, 0.3, 5, anchors) # threshold:[0,1], nms_value: [0, 1]
         cnt_car = 0 # counter of car
         there_is_car = False # the sign of if there is a car
         cnt_true = 0 # count for how long there is a car
         cnt_false = 0 # count for how long there is no car
-        led_b.value(1)
+        led_b.value(1) # trun off the light
         while(True):
             img = sensor.snapshot()
             t = time.ticks_ms()
             objects = kpu.run_yolo2(task, img)
             t = time.ticks_ms() - t
             if objects:
-                led_b.value(1) # turn of the light
+                led_b.value(1) # turn off the light
                 cnt_false = 0
                 cnt_true += 1
                 # increasing cnt
