@@ -1,5 +1,4 @@
 # Rapport de IOT-Projet
-## 
 ## Analyse du marché du produit
 Nous avons mis en place un compteur de véhicules qui compte le nombre de véhicules qui passent. Il peut être utilisé dans les parkings, les carrefours, les entrées des communautés, etc. pour compter les véhicules dans la zone. Il peut également être utilisé par les autorités chargées de la circulation pour compter le trafic et enregistrer les informations sur les véhicules.   
 Sur le marché actuel, le comptage des véhicules est principalement réalisé à l'aide de capteurs de pression, qui sont trop à usage unique et ne peuvent être utilisés que pour le comptage des véhicules. Nous avons mis en œuvre une méthode de reconnaissance d'objets par apprentissage automatique, qui permet une mise à niveau logicielle de la surveillance pour permettre le comptage des véhicules.  
@@ -12,7 +11,7 @@ Les conséquences possibles sont:
 2. Enregistrement d'informations non liées aux véhicules, telles que les piétons, les rues, les événements, etc.
 3. Attaques malveillantes sur la reconnaissance de l'IA (images de véhicules, etc.) conduisant à des informations erronées.
 ## Architecture matérielle de l’objet
-Le comptoir est composé d'un kit Maixpy dans une mallette conçue par Fablab. Dans le kit, il y a une carte de développement avec une chip k210 et un écran LED. Dans les conceptions futures, il sera possible de se passer de l'affichage Led et d'envoyer les données au serveur. 
+Le comptoir est composé d'un kit Maixpy dans une mallette conçue par Fablab.Dans le kit, il y a une carte de développement avec une chip k210 et un écran LED. Dans les conceptions futures, il sera possible de se passer de l'affichage Led et d'envoyer les données au serveur. 
 ##  Le coût de la BOM de notre produit (composants, PCB et enclosure) pour 5000 unités
 carte sipeed ~25€  
 boitier ~1€  
