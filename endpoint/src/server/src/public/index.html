@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="generator" content="thibaud 0.88.1">
+    <title>Comptage de Vehicule</title>
+
+    <!-- Boosted core CSS -->
+    <link href="https://cdn.jsdelivr.net" rel="preconnect" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/boosted@5.1.3/dist/css/boosted.min.css" rel="stylesheet" integrity="sha384-Di/KMIVcO9Z2MJO3EsrZebWTNrgJTrzEDwAplhM5XnCFQ1aDhRNWrp6CWvVcn00c" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/boosted@5.1.3/dist/js/boosted.bundle.min.js" integrity="sha384-5thbp4uNEqKgkl5m+rMBhqR+ZCs+3iAaLIghPWAgOv0VKvzGlYKR408MMbmCjmZF" crossorigin="anonymous"></script>
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+  </head>
+  <body>
+    
+<svg xmlns>
+</svg>
+
+<main>
+
+  <header>
+    <div id="nb_voitures">
+      <p1>Nombre de Voitures</p1>
+      <input class="form-control"id ="affichage_nb_voitures"  style="color:black"type="text" aria-label="affichage_nb_voitures" readonly>
+
+
+
+    </div>
+
+  </header>
+
+</main>
+<script>
+var ws = new WebSocket("ws://"+window.location.host + "/ws");
+ws.onmessage=function(event) {
+        lastMessage = JSON.parse(event.data);
+        nb_voitures = lastMessage.nb_voitures;
+        var affichage_voitures = document.getElementById("affichage_nb_voitures");
+        affichage_voitures.value = nb_voitures;
+
+}
+
+</script>
+
+  </body>
+</html>
