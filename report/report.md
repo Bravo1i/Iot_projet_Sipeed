@@ -13,8 +13,8 @@ Les conséquences possibles sont:
 ## Architecture matérielle de l’objet
 Le comptoir est composé d'un kit Maixpy dans une mallette conçue par Fablab.Dans le kit, il y a une carte de développement avec une chip k210 et un écran LED. Dans les conceptions futures, il sera possible de se passer de l'affichage Led et d'envoyer les données au serveur. 
 ##  Le coût de la BOM de notre produit (composants, PCB et enclosure) pour 5000 unités
-carte sipeed ~25€  
-boitier ~1€  
+carte sipeed ~ 25€  
+boitier ~ moins de 1€  
 somme = (25+1)*5000 = 130 000€
 ## Implémentation du logiciel embarqué
 Nous avons pré-installé le programme principal et le modèle de reconnaissance des véhicules sur la carte de développement. Ensuite, grâce à l'algorithme yolo v2 préinstallé sur la carte de développement k210, nous avons pu identifier les véhicules en temps réel à partir des images capturées par la caméra.  
@@ -35,3 +35,6 @@ Comme la carte de développement ne dispose que de 12mb de cache, le total de to
 ## Temps d’exécution
 Sur l'écran de notre terminal, nous pouvons voir l'intervalle entre chaque image, qui est généralement de 35-40ms, y compris le temps pris par la caméra plus le temps de reconnaissance de l'algorithme, ainsi que le temps d'affichage et de calcul logique.  
 Pour la vidéo, nous pouvons garantir une fréquence de (1000/40)=25 images par seconde.
+## Compter le nombre de lignes de code développé
+Pour la partie code sur la carte, nous avons repris un code deja existant et nous l’avons adapté avec notre modèle de reconnaissance de véhicule et nous avons rajouté une communication UART. (environ 20 lignes)  
+Pour la partie serveur, beaucoup était déjà écrit. Nous avons juste créé la partie HTML et la fonction readserial dans le fichier serialport.py.  (environ 15 lignes pour la fonction et 30 lignes pour l’HTML).
